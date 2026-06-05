@@ -5,6 +5,7 @@ export const Colors = {
   light: {
     text: '#0F172A',
     background: '#F8FAFC',
+    hover: '#ffffff',
     card: '#FFFFFF',
     tint: tintColorLight,
     icon: '#64748B',
@@ -17,6 +18,7 @@ export const Colors = {
   dark: {
     text: '#F1F5F9',
     background: '#0D111A',
+    hover: '#c2d5ff',
     card: '#161D2C',
     tint: tintColorDark,
     icon: '#94A3B8',

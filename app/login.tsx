@@ -17,6 +17,7 @@ import { useAuth } from '@/context/AuthContext';
 import { Topbar } from '@/components/ui/Topbar';
 import { Layout } from '@/constants/layout';
 import { useMutation } from '@/hooks/use-mutation';
+import { useRouter } from 'expo-router';
 
 export default function Login() {
   const { theme } = useThemeStorage();
@@ -29,6 +30,7 @@ export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
 
   const handleLogin = async () => {
     if (!username || !password) {
@@ -257,7 +259,7 @@ export default function Login() {
             {loading && <ActivityIndicator color={colors.background} size="small" />}
           </Pressable>
 
-          <Pressable style={styles.linkButton}>
+          <Pressable style={styles.linkButton} onPress={() => {router.replace("/register")}}>
             <Text style={styles.linkText}>
               Criar conta
             </Text>

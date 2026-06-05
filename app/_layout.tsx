@@ -14,6 +14,7 @@ import {
 } from '@expo-google-fonts/space-mono';
 import { useThemeStorage } from '@/hooks/use-theme-storage';
 import { AuthProvider, useAuth } from '@/context/AuthContext'; 
+import { Offline } from '@/components/ui/Offline';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,6 +26,7 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <RootLayoutNav />
+      <Offline />
     </AuthProvider>
   );
 }

@@ -54,7 +54,7 @@ export default function Profile() {
         } catch (err: any) {
             console.log("Falha na mutação:", err);
             Alert.alert(
-                "Erro ao atualizar", 
+                "Erro ao atualizar",
                 err.message || "Ocorreu um problema ao salvar seus dados. Tente novamente."
             );
         }
@@ -65,15 +65,15 @@ export default function Profile() {
             "Sair da conta",
             "Tem certeza que deseja desconectar do ismr?",
             [
-                { 
-                    text: "Cancelar", 
-                    style: "cancel" 
+                {
+                    text: "Cancelar",
+                    style: "cancel"
                 },
                 {
                     text: "Sair",
                     style: "destructive",
                     onPress: async () => {
-                        await logout(); 
+                        await logout();
                     }
                 }
             ]
@@ -137,100 +137,104 @@ export default function Profile() {
             >
                 <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
 
-                    <View style={styles.headerContainer}>
-                        <Text style={styles.title}>
-                            Olá, {fetchData?.display_name}!
-                        </Text>
-                        <View style={styles.divider} />
-                    </View>
-
-                    <View style={styles.formContainer}>
-
-                        <View style={styles.inputGroup}>
-                            <Text style={styles.label}>Nome de Exibição</Text>
-                            <TextInput
-                                style={styles.input}
-                                value={displayName}
-                                onChangeText={setDisplayName}
-                                autoCapitalize="words"
-                                placeholderTextColor={colors.tabIconDefault}
-                            />
+                    {fetchError ? (
+                        <View style={[styles.statusContainer, styles.errorContainer, { borderColor: colors.error, backgroundColor: colors.background, marginTop: 24 }]}>
+                            <CircleX size={Layout.ui.iconSize} color={colors.error} />
+                            <Text style={[styles.statusTitle]}>Falha ao carregar dados</Text>
+                            <Text style={[styles.statusMessage]}>{fetchError}</Text>
                         </View>
-
-                        <View style={styles.inputGroup}>
-                            <Text style={styles.label}>Username</Text>
-                            <TextInput
-                                style={styles.input}
-                                value={username}
-                                onChangeText={setUsername}
-                                autoCapitalize="none"
-                                autoCorrect={false}
-                                placeholderTextColor={colors.tabIconDefault}
-                            />
-                        </View>
-
-                        <View style={styles.inputGroup}>
-                            <Text style={styles.label}>Nova Senha</Text>
-                            <View style={styles.passwordContainer}>
-                                <TextInput
-                                    style={styles.passwordInput}
-                                    value={password}
-                                    onChangeText={setPassword}
-                                    secureTextEntry={!showPassword}
-                                    autoCapitalize="none"
-                                    placeholderTextColor={colors.tabIconDefault}
-                                />
-                                <Pressable
-                                    onPress={() => setShowPassword(!showPassword)}
-                                    style={styles.eyeButton}
-                                >
-                                    {showPassword ? (
-                                        <Eye color={colors.tabIconDefault} size={Layout.ui.iconSize} strokeWidth={Layout.ui.iconStrokeWidth} />
-                                    ) : (
-                                        <EyeOff color={colors.tabIconDefault} size={Layout.ui.iconSize} strokeWidth={Layout.ui.iconStrokeWidth} />
-                                    )}
-                                </Pressable>
+                    ) : (
+                        <>
+                            <View style={styles.headerContainer}>
+                                <Text style={styles.title}>
+                                    Olá, {fetchData?.display_name}!
+                                </Text>
+                                <View style={styles.divider} />
                             </View>
-                        </View>
 
-                        <Pressable
-                            style={({ pressed }) => [
-                                styles.loginButton,
-                                { opacity: pressed || mutateLoading ? 0.8 : 1 }
-                            ]}
-                            onPress={handleSave}
-                            disabled={mutateLoading}
-                        >
-                            {!mutateLoading && (
-                                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                                    <Text style={styles.loginButtonText}>Salvar</Text>
-                                    <ChevronRight color={colors.background} size={Layout.ui.iconSize} strokeWidth={Layout.ui.iconStrokeWidth} />
+                            <View style={styles.formContainer}>
+
+                                <View style={styles.inputGroup}>
+                                    <Text style={styles.label}>Nome de Exibição</Text>
+                                    <TextInput
+                                        style={styles.input}
+                                        value={displayName}
+                                        onChangeText={setDisplayName}
+                                        autoCapitalize="words"
+                                        placeholderTextColor={colors.tabIconDefault}
+                                    />
                                 </View>
-                            )}
-                            {mutateLoading && <ActivityIndicator color={colors.background} size="small" />}
-                        </Pressable>
-<Pressable
-                            style={({ pressed }) => [
-                                styles.logoutButton,
-                                { opacity: pressed ? 0.5 : 1 } 
-                            ]}
-                            onPress={handleLogout}
-                        >
-                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                                <LogOut color={colors.error} size={Layout.ui.iconSize} strokeWidth={Layout.ui.iconStrokeWidth} />
-                                <Text style={styles.logoutButtonText}>Sair da conta</Text>
+
+                                <View style={styles.inputGroup}>
+                                    <Text style={styles.label}>Username</Text>
+                                    <TextInput
+                                        style={styles.input}
+                                        value={username}
+                                        onChangeText={setUsername}
+                                        autoCapitalize="none"
+                                        autoCorrect={false}
+                                        placeholderTextColor={colors.tabIconDefault}
+                                    />
+                                </View>
+
+                                <View style={styles.inputGroup}>
+                                    <Text style={styles.label}>Nova Senha</Text>
+                                    <View style={styles.passwordContainer}>
+                                        <TextInput
+                                            style={styles.passwordInput}
+                                            value={password}
+                                            onChangeText={setPassword}
+                                            secureTextEntry={!showPassword}
+                                            autoCapitalize="none"
+                                            placeholderTextColor={colors.tabIconDefault}
+                                        />
+                                        <Pressable
+                                            onPress={() => setShowPassword(!showPassword)}
+                                            style={styles.eyeButton}
+                                        >
+                                            {showPassword ? (
+                                                <Eye color={colors.tabIconDefault} size={Layout.ui.iconSize} strokeWidth={Layout.ui.iconStrokeWidth} />
+                                            ) : (
+                                                <EyeOff color={colors.tabIconDefault} size={Layout.ui.iconSize} strokeWidth={Layout.ui.iconStrokeWidth} />
+                                            )}
+                                        </Pressable>
+                                    </View>
+                                </View>
+
+                                <Pressable
+                                    style={({ pressed }) => [
+                                        styles.loginButton,
+                                        { opacity: pressed || mutateLoading ? 0.8 : 1 }
+                                    ]}
+                                    onPress={handleSave}
+                                    disabled={mutateLoading}
+                                >
+                                    {!mutateLoading && (
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                                            <Text style={styles.loginButtonText}>Salvar</Text>
+                                            <ChevronRight color={colors.background} size={Layout.ui.iconSize} strokeWidth={Layout.ui.iconStrokeWidth} />
+                                        </View>
+                                    )}
+                                    {mutateLoading && <ActivityIndicator color={colors.background} size="small" />}
+                                </Pressable>
+
+                                <Pressable
+                                    style={({ pressed }) => [
+                                        styles.logoutButton,
+                                        { opacity: pressed ? 0.5 : 1 }
+                                    ]}
+                                    onPress={handleLogout}
+                                >
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                                        <LogOut color={colors.error} size={Layout.ui.iconSize} strokeWidth={Layout.ui.iconStrokeWidth} />
+                                        <Text style={styles.logoutButtonText}>Sair da conta</Text>
+                                    </View>
+                                </Pressable>
+
                             </View>
-                        </Pressable>
-                        {fetchError && (
-                            <View style={[styles.statusContainer, styles.errorContainer, { borderColor: colors.error, backgroundColor: colors.background }]}>
-                                <CircleX size={Layout.ui.iconSize} color={colors.error} />
-                                <Text style={[styles.statusTitle]}>Falha ao carregar dados</Text>
-                                <Text style={[styles.statusMessage]}>{fetchError}</Text>
-                            </View>
-                        )}
-                        
-                        
-                    </View>
+                        </>
+                    )}
+
                 </ScrollView>
             </KeyboardAvoidingView>
         </>

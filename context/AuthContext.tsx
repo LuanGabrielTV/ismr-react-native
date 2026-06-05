@@ -1,12 +1,12 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import * as SecureStore from 'expo-secure-store';
-import { useFetch } from '@/hooks/use-fetch';
 
 const TOKEN_KEY = 'ismr_jwt_token';
 
 interface User {
   username: string;
-  password: string;
+  password?: string; 
+  display_name?: string; 
 }
 
 interface AuthContextType {
@@ -33,9 +33,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (storedToken) {
           setToken(storedToken);
 
-          const { data: fetchData} = useFetch('https://ismr-engine-service.onrender.com/users/me');
-          if (fetchData) {
-            setUser(fetchData);
+          const response = await fetch('https://ismr-engine-service.onrender.com/users/me', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${storedToken}`,
+              'Content-Type': 'application/json'
+            }
+          });
+
+          if (response.ok) {
+            const userData = await response.json();
+            setUser(userData);
+          } else {
+            await SecureStore.deleteItemAsync(TOKEN_KEY);
+            setToken(null);
           }
         }
       } catch (error) {
